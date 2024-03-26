@@ -46,8 +46,11 @@
               </mat-form-field>
 
               <mat-form-field class="mat-30">
-                <mat-label> Calle y Número </mat-label>
-                <input formControlName="direccion" matInput placeholder="Ingrese su direccion">
+                <mat-label> Direccion </mat-label>
+                <input formControlName="direccion" matInput placeholder="Calle y número">
+                <mat-error *ngIf="isValidField('direccion')">
+                  <span style="color: red;">Ingrese su direccion</span>
+                </mat-error>
               </mat-form-field>
 
               <mat-form-field class="mat-30">
