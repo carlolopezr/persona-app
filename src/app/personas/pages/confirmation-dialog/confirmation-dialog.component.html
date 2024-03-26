@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Confirmación</h1>
+<div mat-dialog-content>
+  <p> ¿Está seguro que desea eliminar a la persona con el rut: {{ data.persona.rut | rutFormat }} ?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button (click)="onDelete(data.persona.id_persona)" mat-button [mat-dialog-close]="true" cdkFocusInitial>Aceptar</button>
+</div>

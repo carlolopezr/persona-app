@@ -1,0 +1,159 @@
+<app-navbar-page></app-navbar-page>
+
+<div class="container pb-5">
+
+<div *ngIf="!this.persona" class="spinner-container">
+  <mat-spinner></mat-spinner>
+</div>
+  <div *ngIf="this.persona" class="mt-4 text-center">
+    <h1 >Editar Persona</h1>
+    <div class="d-flex justify-content-center">
+      <div class="w-80">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+          <mat-card>
+            <mat-card-content>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Nombre </mat-label>
+                <input formControlName="nombre" matInput placeholder="Ingrese su nombre">
+                <mat-error *ngIf="isValidField('nombre')">
+                  <span style="color: red;">El formato del nombre no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Apellido </mat-label>
+                <input formControlName="apellido" matInput placeholder="Ingrese su apellido">
+                <mat-error *ngIf="isValidField('apellido')">
+                  <span style="color: red;">El formato del apellido no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-50">
+                <mat-label> telefono </mat-label>
+                <input formControlName="telefono" matInput placeholder="Ingrese su telefono">
+                <mat-hint><i>Ejemplo 976680419</i></mat-hint>
+                <mat-error *ngIf="isValidField('telefono')">
+                  <span style="color: red;">El formato del télefono no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <div class="mat-30"></div>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Número y calle </mat-label>
+                <input formControlName="direccion" matInput placeholder="Ingrese su direccion">
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Región </mat-label>
+                <mat-select [(value)]="selectedRegionId" (selectionChange)="onRegionChange($event.value)">
+                  <mat-option [value]="region.id_region" *ngFor="let region of regiones">
+                    {{ region.nombre_region }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Comuna </mat-label>
+                <mat-select [(value)]="selectedComunaId" formControlName="id_comuna">
+                  <mat-option *ngFor="let comuna of comunasFiltradas" [value]="comuna.id_comuna">
+                    {{ comuna.nombre_comuna }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input formControlName="fec_nacimiento" matInput [matDatepicker]="picker">
+                <mat-error *ngIf="isValidField('fec_nacimiento')">
+                  <span style="color: red;">La fecha debe ser menor a la actual.</span>
+                </mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+
+              <div class="mt-2">
+                <label style="width: 98%; margin-left:1%" id="example-radio-group-label">Seleccione su genero: </label>
+                <mat-radio-group formControlName="sexo" color="primary">
+                  <mat-radio-button value=0>Masculino </mat-radio-button>
+                  <mat-radio-button value=1>Femenino </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </mat-card-content>
+
+            <mat-card-footer>
+              <div style="margin: 2%; text-align:right">
+                <button type="submit" mat-raised-button color="primary">
+                  Editar Persona
+                </button>
+              </div>
+              <div *ngIf="personasReferencias.length >= 1" class="m-3 text-center">
+                <h2>Personas relacionadas</h2>
+                <div class="mat-elevation-z8">
+
+                  <div class="table-responsive mt-2">
+                    <table mat-table [dataSource]="personasReferencias" matSort>
+
+                      <!-- Columna nombre -->
+                      <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                        <td mat-cell *matCellDef="let row"> {{row.nombre}} </td>
+                      </ng-container>
+
+                      <!-- Columna Apellido -->
+                      <ng-container matColumnDef="apellido">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
+                        <td mat-cell *matCellDef="let row"> {{row.apellido}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="rut">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Rut </th>
+                        <td mat-cell *matCellDef="let row"> {{row.rut | rutFormat}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="sexo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexo </th>
+                        <td mat-cell *matCellDef="let row"> {{row.sexo | sexoTransform}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="telefono">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefono </th>
+                        <td mat-cell *matCellDef="let row"> {{row.telefono}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="direccion">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Direccion </th>
+                        <td mat-cell *matCellDef="let row"> {{row.direccion}} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="fec_nacimiento">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha de nacimiento </th>
+                        <td mat-cell *matCellDef="let row"> {{row.fec_nacimiento | date:'dd/M/yy' }} </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+                        <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                      </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                  </div>
+              </div>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+

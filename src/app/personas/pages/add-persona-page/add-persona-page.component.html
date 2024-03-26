@@ -1,0 +1,125 @@
+<app-navbar-page></app-navbar-page>
+<div class="container">
+
+
+  <div class="mt-5 text-center">
+
+    <h1 >Agregar Persona</h1>
+    <div class="mt-5 d-flex justify-content-center">
+      <div class="w-80">
+        <form [formGroup]="myForm" (ngSubmit)="onSubmit()" autocomplete="off">
+          <mat-card>
+            <mat-card-content>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Nombre </mat-label>
+                <input formControlName="nombre" matInput placeholder="Ingrese su nombre">
+                <mat-error *ngIf="isValidField('nombre')">
+                  <span style="color: red;">El formato del nombre no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Apellido </mat-label>
+                <input formControlName="apellido" matInput placeholder="Ingrese su apellido">
+                <mat-error *ngIf="isValidField('apellido')">
+                  <span style="color: red;">El formato del apellido no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Rut </mat-label>
+                <input formControlName="rut" matInput placeholder="Ingrese su rut">
+                <mat-hint><i>Ejemplo (19.109.921-4)</i></mat-hint>
+                <mat-error *ngIf="isValidField('rut')">
+                  <span style="color: red;">El rut ingresado no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-50">
+                <mat-label> telefono </mat-label>
+                <input formControlName="telefono" matInput placeholder="Ingrese su telefono">
+                <mat-hint><i>Ejemplo 976680419</i></mat-hint>
+                <mat-error *ngIf="isValidField('telefono')">
+                  <span style="color: red;">El formato del télefono no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Calle y Número </mat-label>
+                <input formControlName="direccion" matInput placeholder="Ingrese su direccion">
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Región </mat-label>
+                <mat-select formControlName="region" (selectionChange)="onRegionChange($event.value)">
+                  <mat-option [value]="region.id_region" *ngFor="let region of regiones">
+                    {{ region.nombre_region }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Comuna </mat-label>
+                <mat-select formControlName="id_comuna">
+                  <mat-option *ngFor="let comuna of comunasFiltradas" [value]="comuna.id_comuna">
+                    {{ comuna.nombre_comuna }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label> Correo </mat-label>
+                <input formControlName="email" matInput placeholder="Ingrese su email">
+                <mat-error *ngIf="isValidField('email')">
+                  <span style="color: red;">El formato del correo electrónico no es válido.</span>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="mat-30">
+                <mat-label>Fecha de nacimiento</mat-label>
+                <input formControlName="fec_nacimiento" matInput [matDatepicker]="picker">
+                <mat-error *ngIf="isValidField('fec_nacimiento')">
+                  <span style="color: red;">La fecha debe ser menor a la actual.</span>
+                </mat-error>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+
+
+              <div class="mt-2">
+                <label style="width: 98%; margin-left:1%" id="example-radio-group-label">Seleccione su genero: </label>
+                <mat-radio-group formControlName="sexo" color="primary">
+                  <mat-radio-button value=0>Masculino </mat-radio-button>
+                  <mat-radio-button value=1>Femenino </mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <mat-form-field class="mat-50">
+                <mat-label> Referencias </mat-label>
+                <mat-select formControlName="id_referencia">
+                  <mat-option [value]="persona.rut" *ngFor="let persona of personas">
+                    {{ persona.rut }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </mat-card-content>
+
+            <mat-card-footer>
+              <div style="margin: 2%; text-align:right">
+                <button type="submit" mat-raised-button color="primary">
+                  Agregar persona
+                </button>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
