@@ -1,4 +1,4 @@
 
 export const environments = {
-  baseUrl : 'https://api-personas-alpha.vercel.app/api/personas'
+  baseUrl : 'https://api-personas-alpha.vercel.app'
 }
